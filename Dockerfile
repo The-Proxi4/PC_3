@@ -4,16 +4,15 @@ WORKDIR /app
 
 # Copiar archivos de solución y proyecto
 COPY *.sln .
-COPY NoticiasEnriquecidas.Mvc/*.csproj ./NoticiasEnriquecidas.Mvc/
+COPY *.csproj ./
 
 # Restaurar dependencias
 RUN dotnet restore
 
 # Copiar todo el código
-COPY NoticiasEnriquecidas.Mvc/. ./NoticiasEnriquecidas.Mvc/
+COPY . .
 
 # Construir y publicar
-WORKDIR /app/NoticiasEnriquecidas.Mvc
 RUN dotnet publish -c Release -o /app/publish
 
 # Etapa 2: Runtime
@@ -23,7 +22,7 @@ WORKDIR /app
 # Copiar la publicación desde la etapa de build
 COPY --from=build /app/publish .
 
-# Configurar puerto dinámico
+# Configurar puerto dinámico para Render
 ENV ASPNETCORE_URLS=http://+:$PORT
 
 # Comando para iniciar la app

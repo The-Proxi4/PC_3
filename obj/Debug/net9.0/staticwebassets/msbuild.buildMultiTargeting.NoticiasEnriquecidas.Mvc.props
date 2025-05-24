@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\NoticiasEnriquecidas.Mvc.props" />
+</Project>

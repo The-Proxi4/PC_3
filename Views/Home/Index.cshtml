@@ -1,9 +1,41 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Bienvenido a Noticias Enriquecidas";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Bienvenido a Noticias Enriquecidas</h1>
-    <p>Para ver las noticias, haz clic en el siguiente botón:</p>
-    <a asp-controller="Noticias" asp-action="Index" class="btn btn-primary btn-lg">Ver Noticias</a>
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center min-vh-75">
+        <div class="col-md-7 text-center text-md-start">
+            <h1 class="display-1 fw-bold mb-4" style="color: #1f2937; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                ¡Bienvenido a <span class="text-primary">Noticias Enriquecidas</span>!
+            </h1>
+            <p class="lead mb-4 fs-4 text-secondary" style="line-height: 1.6;">
+                Explora las noticias más recientes, enriquecidas con comentarios, autores y la opinión de nuestra comunidad.
+            </p>
+            <p class="mb-5 fs-5 text-muted" style="max-width: 500px;">
+                Navega fácilmente, accede a contenido detallado y comparte tu feedback para ayudar a mejorar la experiencia.
+            </p>
+            <a asp-controller="Noticias" asp-action="Index" class="btn btn-gradient btn-lg px-5 py-3 shadow-lg">
+                Ver Noticias
+                <svg xmlns="http://www.w3.org/2000/svg" class="ms-3" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+        </div>
+        <div class="col-md-5 d-none d-md-block">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Noticias" class="img-fluid rounded shadow" style="border-radius: 20px;">
+        </div>
+    </div>
 </div>
+
+<style>
+    .btn-gradient {
+        background: linear-gradient(90deg, #3b82f6, #2563eb);
+        color: white;
+        border-radius: 50px;
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .btn-gradient:hover {
+        background: linear-gradient(90deg, #2563eb, #3b82f6);
+        color: #f3f4f6;
+        text-decoration: none;
+        transform: scale(1.05);
+    }
+</style>

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using PC_3.NoticiasEnriquecidas.Models;
+using NoticiasEnriquecidas.Models;
 
-namespace PC_3.NoticiasEnriquecidas.Data
+namespace NoticiasEnriquecidas.Data
 {
     public class AppDbContext : DbContext
     {

@@ -1,0 +1,15 @@
+@model List<NoticiasEnriquecidas.Models.Post>
+
+<h2>Listado de Noticias</h2>
+
+<ul>
+@foreach (var post in Model)
+{
+    <li>
+        <span>@post.Id - </span>
+        <a asp-controller="Noticias" asp-action="Details" asp-route-id="@post.Id" style="color:black;">
+            @post.Title
+        </a>
+    </li>
+}
+</ul>

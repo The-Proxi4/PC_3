@@ -1,8 +1,12 @@
-using PC_3.NoticiasEnriquecidas.Data;
+using NoticiasEnriquecidas.Services;
+using NoticiasEnriquecidas.Data;
 using Microsoft.EntityFrameworkCore;
 
 
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpClient<IJsonPlaceholderService, JsonPlaceholderService>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

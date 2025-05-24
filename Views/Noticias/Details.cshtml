@@ -1,0 +1,59 @@
+@model NoticiasEnriquecidas.Models.PostDetailsViewModel
+
+<h2>@Model.Post.Title</h2>
+<p>@Model.Post.Body</p>
+
+<h4>Autor</h4>
+<p>@Model.Author.Name (@Model.Author.Email)</p>
+
+<h4>Comentarios</h4>
+@if (Model.Comments != null && Model.Comments.Count > 0)
+{
+    <ul>
+        @foreach (var comment in Model.Comments)
+        {
+            <li><strong>@comment.Name</strong>: @comment.Body</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No hay comentarios.</p>
+}
+
+<h4>Feedback</h4>
+<button id="likeBtn">👍 Me gustó</button>
+<button id="dislikeBtn">👎 No me gustó</button>
+
+<div id="feedbackMessage"></div>
+
+@section Scripts {
+<script>
+    const postId = @Model.Post.Id;
+
+    document.getElementById("likeBtn").addEventListener("click", () => sendFeedback("like"));
+    document.getElementById("dislikeBtn").addEventListener("click", () => sendFeedback("dislike"));
+
+    function sendFeedback(sentimiento) {
+        fetch("/api/feedback", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ postId: postId, sentimiento: sentimiento })
+        })
+        .then(response => {
+            if (response.status === 201) {
+                document.getElementById("feedbackMessage").innerText = "Gracias por tu feedback!";
+            } else if (response.status === 409) {
+                document.getElementById("feedbackMessage").innerText = "Ya has dado feedback a este post.";
+            } else {
+                document.getElementById("feedbackMessage").innerText = "Error al enviar feedback.";
+            }
+        })
+        .catch(() => {
+            document.getElementById("feedbackMessage").innerText = "Error al enviar feedback.";
+        });
+    }
+</script>
+}

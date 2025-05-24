@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace PC_3.NoticiasEnriquecidas.Data
+namespace NoticiasEnriquecidas.Data
 {
     public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {

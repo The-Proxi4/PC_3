@@ -1,35 +1,57 @@
 @model NoticiasEnriquecidas.Models.PostDetailsViewModel
 
-<h2>@Model.Post.Title</h2>
-<p>@Model.Post.Body</p>
+<div class="container py-5">
+    <h2 class="mb-4 text-primary fw-bold display-4" style="letter-spacing: 1px;">
+        @Model.Post.Title
+    </h2>
+    <p class="fs-5 text-secondary mb-5" style="line-height: 1.6;">
+        @Model.Post.Body
+    </p>
 
-<h4>Autor</h4>
-<p>@Model.Author.Name (@Model.Author.Email)</p>
+    <hr class="my-4" />
 
-<h4>Comentarios</h4>
-@if (Model.Comments != null && Model.Comments.Count > 0)
-{
-    <ul>
-        @foreach (var comment in Model.Comments)
-        {
-            <li><strong>@comment.Name</strong>: @comment.Body</li>
-        }
-    </ul>
-}
-else
-{
-    <p>No hay comentarios.</p>
-}
+    <h4 class="text-success fw-semibold mb-3">Autor</h4>
+    <p>
+        <strong>@Model.Author.Name</strong> &nbsp;
+        <a href="mailto:@Model.Author.Email" class="text-decoration-none">
+            <small class="text-muted">(@Model.Author.Email)</small>
+        </a>
+    </p>
 
-<h4>Feedback</h4>
-<button id="likeBtn">👍 Me gustó</button>
-<button id="dislikeBtn">👎 No me gustó</button>
+    <h4 class="text-info fw-semibold mt-5 mb-3">Comentarios (@Model.Comments?.Count ?? 0)</h4>
+    @if (Model.Comments != null && Model.Comments.Count > 0)
+    {
+        <ul class="list-group mb-5">
+            @foreach (var comment in Model.Comments)
+            {
+                <li class="list-group-item">
+                    <strong>@comment.Name</strong>: @comment.Body
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted fst-italic">No hay comentarios.</p>
+    }
 
-<div id="feedbackMessage"></div>
+    <h4 class="mb-3">Feedback</h4>
+    <div class="d-flex gap-3 mb-4">
+        <button id="likeBtn" class="btn btn-outline-success btn-lg fw-semibold px-4">
+            👍 Me gustó
+        </button>
+        <button id="dislikeBtn" class="btn btn-outline-danger btn-lg fw-semibold px-4">
+            👎 No me gustó
+        </button>
+    </div>
+
+    <div id="feedbackMessage" class="alert d-none" role="alert"></div>
+</div>
 
 @section Scripts {
 <script>
     const postId = @Model.Post.Id;
+    const feedbackMessage = document.getElementById("feedbackMessage");
 
     document.getElementById("likeBtn").addEventListener("click", () => sendFeedback("like"));
     document.getElementById("dislikeBtn").addEventListener("click", () => sendFeedback("dislike"));
@@ -37,22 +59,27 @@ else
     function sendFeedback(sentimiento) {
         fetch("/api/feedback", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ postId: postId, sentimiento: sentimiento })
         })
         .then(response => {
+            feedbackMessage.classList.remove("d-none", "alert-danger", "alert-success", "alert-warning");
+
             if (response.status === 201) {
-                document.getElementById("feedbackMessage").innerText = "Gracias por tu feedback!";
+                feedbackMessage.classList.add("alert-success");
+                feedbackMessage.innerText = "¡Gracias por tu feedback!";
             } else if (response.status === 409) {
-                document.getElementById("feedbackMessage").innerText = "Ya has dado feedback a este post.";
+                feedbackMessage.classList.add("alert-warning");
+                feedbackMessage.innerText = "Ya has dado feedback a este post.";
             } else {
-                document.getElementById("feedbackMessage").innerText = "Error al enviar feedback.";
+                feedbackMessage.classList.add("alert-danger");
+                feedbackMessage.innerText = "Error al enviar feedback.";
             }
         })
         .catch(() => {
-            document.getElementById("feedbackMessage").innerText = "Error al enviar feedback.";
+            feedbackMessage.classList.remove("d-none");
+            feedbackMessage.classList.add("alert-danger");
+            feedbackMessage.innerText = "Error al enviar feedback.";
         });
     }
 </script>
